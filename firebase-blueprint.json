@@ -1,0 +1,162 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Authenticated client or practitioner account profile",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID",
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User email address",
+          "maxLength": 256
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Display name of the user",
+          "maxLength": 128
+        },
+        "role": {
+          "type": "string",
+          "enum": ["client", "practitioner", "admin"],
+          "description": "User access role"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the profile was created"
+        }
+      },
+      "required": ["userId", "email"]
+    },
+    "Application": {
+      "title": "Practitioner Application",
+      "description": "Application submitted by accounting or finance professional to join the bench",
+      "type": "object",
+      "properties": {
+        "fullName": {
+          "type": "string",
+          "description": "Full legal name of the practitioner",
+          "minLength": 2,
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Professional email address",
+          "maxLength": 256
+        },
+        "credentialUrl": {
+          "type": "string",
+          "description": "Verification link to LinkedIn, State Bar, or CPA License registry",
+          "maxLength": 512
+        },
+        "practiceArea": {
+          "type": "string",
+          "enum": ["finance", "audit", "law"],
+          "description": "Primary specialization domain"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["submitted", "under_review", "accepted", "declined"],
+          "description": "Application review status"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Server timestamp of submission"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Optional Auth UID if the applicant was logged in",
+          "maxLength": 128
+        }
+      },
+      "required": ["fullName", "email", "credentialUrl", "practiceArea", "status"]
+    },
+    "Inquiry": {
+      "title": "Contact Us & Project Inquiry",
+      "description": "Inquiry or contact request submitted by AI teams, enterprise clients, or researchers",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Sender name",
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Contact email address",
+          "maxLength": 256
+        },
+        "organization": {
+          "type": "string",
+          "description": "Organization or AI Lab name",
+          "maxLength": 128
+        },
+        "message": {
+          "type": "string",
+          "description": "Inquiry or project scope message",
+          "maxLength": 4096
+        },
+        "domain": {
+          "type": "string",
+          "description": "Target financial domain"
+        },
+        "format": {
+          "type": "string",
+          "description": "Deliverable format"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "received", "in_review", "scheduled"],
+          "description": "Current processing status"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Server timestamp of inquiry"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Optional Auth UID if user was authenticated",
+          "maxLength": 128
+        }
+      },
+      "required": ["email", "status"]
+    },
+    "TestConnection": {
+      "title": "Test Connection Document",
+      "description": "Ping document for verifying Firestore client connectivity",
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "maxLength": 64
+        }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile records stored by auth UID"
+    },
+    "/applications/{applicationId}": {
+      "schema": "Application",
+      "description": "Submitted practitioner bench applications"
+    },
+    "/inquiries/{inquiryId}": {
+      "schema": "Inquiry",
+      "description": "Contact inquiries and project messages"
+    },
+    "/test/{testId}": {
+      "schema": "TestConnection",
+      "description": "Diagnostic connection verification collection"
+    }
+  }
+}

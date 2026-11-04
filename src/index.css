@@ -1,0 +1,50 @@
+/* Pure Vanilla CSS - Global Resets & Base Variables */
+:root {
+  --color-bg-white: #FFFFFF;
+  --color-bg-gray: #F8FAFC;
+  --color-navy: #001F3F;
+  --color-slate-dark: #1E293B;
+  --color-slate-medium: #475569;
+  --color-slate-light: #64748B;
+  --color-border: #E2E8F0;
+  --color-azure: #0088FF;
+  --color-azure-hover: #0072D6;
+  --color-green: #7ED957;
+  --color-green-dark: #2E7D32;
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--color-navy);
+  background-color: var(--color-bg-white);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-azure);
+  outline-offset: 2px;
+}

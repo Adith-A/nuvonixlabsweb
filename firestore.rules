@@ -1,0 +1,85 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Common security helpers
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Diagnostics / connection health test
+    match /test/{testId} {
+      allow get: if isValidId(testId);
+      allow list, write: if false;
+    }
+
+    // User profiles
+    match /users/{userId} {
+      allow get: if isSignedIn() && request.auth.uid == userId;
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn()
+        && request.auth.uid == userId
+        && incoming().userId == userId
+        && incoming().email is string && incoming().email.size() <= 256
+        && incoming().keys().hasAll(['userId', 'email'])
+        && incoming().keys().hasOnly(['userId', 'email', 'displayName', 'photoURL', 'role', 'createdAt', 'lastLoginAt']);
+      allow update: if isSignedIn()
+        && request.auth.uid == userId
+        && incoming().userId == existing().userId
+        && incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'photoURL', 'lastLoginAt']);
+      allow delete: if false;
+    }
+
+    // Practitioner Bench Applications
+    match /applications/{applicationId} {
+      allow get: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isValidId(applicationId)
+        && incoming().fullName is string && incoming().fullName.size() >= 2 && incoming().fullName.size() <= 128
+        && incoming().email is string && incoming().email.size() <= 256
+        && incoming().credentialUrl is string && incoming().credentialUrl.size() <= 512
+        && incoming().practiceArea in ['finance', 'audit', 'law']
+        && incoming().status == 'submitted'
+        && (!('userId' in incoming()) || (isSignedIn() && incoming().userId == request.auth.uid))
+        && incoming().keys().hasAll(['fullName', 'email', 'credentialUrl', 'practiceArea', 'status'])
+        && incoming().keys().hasOnly(['fullName', 'email', 'credentialUrl', 'practiceArea', 'status', 'createdAt', 'userId']);
+      allow update, delete: if false;
+    }
+
+    // Contact Inquiries & Project Requests
+    match /inquiries/{inquiryId} {
+      allow get: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isValidId(inquiryId)
+        && incoming().email is string && incoming().email.size() <= 256
+        && incoming().status in ['pending', 'received', 'in_review']
+        && (!('name' in incoming()) || (incoming().name is string && incoming().name.size() <= 128))
+        && (!('organization' in incoming()) || (incoming().organization is string && incoming().organization.size() <= 128))
+        && (!('message' in incoming()) || (incoming().message is string && incoming().message.size() <= 4096))
+        && (!('domain' in incoming()) || (incoming().domain is string && incoming().domain.size() <= 128))
+        && (!('format' in incoming()) || (incoming().format is string && incoming().format.size() <= 128))
+        && (!('scopeNotes' in incoming()) || (incoming().scopeNotes is string && incoming().scopeNotes.size() <= 4096))
+        && (!('userId' in incoming()) || (isSignedIn() && incoming().userId == request.auth.uid))
+        && incoming().keys().hasAll(['email', 'status'])
+        && incoming().keys().hasOnly(['name', 'email', 'organization', 'message', 'domain', 'format', 'status', 'scopeNotes', 'createdAt', 'userId']);
+      allow update, delete: if false;
+    }
+  }
+}

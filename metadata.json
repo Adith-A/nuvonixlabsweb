@@ -1,0 +1,8 @@
+{
+  "name": "Nuvonix Labs",
+  "description": "Nuvonix Labs builds expert-written finance and accounting tasks with answer keys and grading rubrics, for teams training and evaluating AI. We're taking early projects now.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
