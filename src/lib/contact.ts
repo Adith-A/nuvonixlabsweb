@@ -1,8 +1,9 @@
-// Contact form delivery: emails each message via FormSubmit (https://formsubmit.co).
-// The first message sent from the live site triggers a one-time "Activate Form"
-// email to CONTACT_INBOX; messages are delivered once that link is clicked.
-const CONTACT_INBOX = 'contact@nuvonixlabs.com';
-const ENDPOINT = `https://formsubmit.co/ajax/${CONTACT_INBOX}`;
+// Contact form delivery: emails each message via Web3Forms (https://web3forms.com).
+// The access key routes submissions to contact@nuvonixlabs.com. It is public by
+// design (it can only send to that inbox), so it is safe to keep in client code.
+const WEB3FORMS_ACCESS_KEY = '729a9919-86a3-4ee0-b86a-999beb4ec785';
+const ENDPOINT = 'https://api.web3forms.com/submit';
+const TIMEOUT_MS = 15000;
 
 export interface ContactMessage {
   name: string;
@@ -17,33 +18,41 @@ export async function sendContactEmail(data: ContactMessage): Promise<void> {
   const organization = (data.organization || '').trim().slice(0, 128);
   const message = data.message.trim().slice(0, 4096);
 
-  const res = await fetch(ENDPOINT, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify({
-      name,
-      email,
-      organization: organization || '(not provided)',
-      message,
-      _subject: `Nuvonix Labs contact form: ${name}${organization ? ` (${organization})` : ''}`,
-      _replyto: email,
-      _template: 'table',
-      _captcha: 'false',
-    }),
-  });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
-  let body: { success?: string | boolean; message?: string } = {};
   try {
-    body = await res.json();
-  } catch {
-    // non-JSON response; fall through to the status check
-  }
+    const res = await fetch(ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_ACCESS_KEY,
+        subject: `Nuvonix Labs contact form: ${name}${organization ? ` (${organization})` : ''}`,
+        from_name: 'Nuvonix Labs website',
+        replyto: email,
+        name,
+        email,
+        organization: organization || '(not provided)',
+        message,
+      }),
+      signal: controller.signal,
+    });
 
-  const ok = res.ok && (body.success === true || body.success === 'true');
-  if (!ok) {
-    throw new Error(body.message || `Contact form request failed (${res.status})`);
+    let body: { success?: boolean | string; message?: string } = {};
+    try {
+      body = await res.json();
+    } catch {
+      // non-JSON response; fall through to the status check
+    }
+
+    const ok = res.ok && (body.success === true || body.success === 'true');
+    if (!ok) {
+      throw new Error(body.message || `Contact form request failed (${res.status})`);
+    }
+  } finally {
+    clearTimeout(timer);
   }
 }
