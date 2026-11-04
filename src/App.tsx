@@ -60,7 +60,8 @@ export default function App() {
     }
   };
 
-  const openContact = () => {
+  const openContact = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
     setContactSuccess(false);
     setContactError(null);
     setContactModalOpen(true);
@@ -175,23 +176,34 @@ export default function App() {
           display: flex;
           align-items: center;
           gap: 12px;
-          font-size: 1.28rem;
+          font-size: 1.25rem;
           font-weight: 800;
           color: var(--nx-navy);
-          letter-spacing: -0.03em;
+          letter-spacing: -0.025em;
           transition: opacity 0.2s var(--nx-ease);
+          text-decoration: none;
         }
 
         .nx-brand:hover {
-          opacity: 0.92;
+          opacity: 0.9;
         }
 
         .nx-logo-img {
+          width: 36px;
           height: 36px;
-          width: auto;
-          max-width: 170px;
           object-fit: contain;
+          flex-shrink: 0;
           display: block;
+          image-rendering: -webkit-optimize-contrast;
+        }
+
+        .nx-footer-logo-img {
+          width: 28px;
+          height: 28px;
+          object-fit: contain;
+          flex-shrink: 0;
+          display: block;
+          image-rendering: -webkit-optimize-contrast;
         }
 
         .nx-nav-group {
@@ -1037,9 +1049,9 @@ export default function App() {
       <footer className="nx-footer">
         <div className="nx-container">
           <div className="nx-footer-inner">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <img src="/image.png" alt="Nuvonix Labs" style={{ width: '24px', height: '24px', borderRadius: '4px' }} />
-              <strong style={{ color: 'var(--nx-navy)' }}>Nuvonix Labs</strong>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <img src="/image.png" alt="Nuvonix Labs" className="nx-footer-logo-img" />
+              <strong style={{ color: 'var(--nx-navy)', fontSize: '1.05rem', letterSpacing: '-0.02em' }}>Nuvonix Labs</strong>
             </div>
 
             <nav className="nx-footer-links" aria-label="Footer Navigation">
