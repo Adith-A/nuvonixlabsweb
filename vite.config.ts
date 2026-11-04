@@ -5,10 +5,13 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
+    // Relative asset paths so the built site works at a domain root
+    // (nuvonixlabs.com) AND under a sub-path (username.github.io/nuvonixlabsweb/).
+    base: './',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
+        '@': path.resolve(import.meta.dirname, '.'),
       },
     },
     server: {
