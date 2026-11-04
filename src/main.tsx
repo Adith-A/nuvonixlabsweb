@@ -1,5 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { createRoot, hydrateRoot } from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
@@ -69,28 +69,9 @@ class RootErrorBoundary extends Component<Props, State> {
 
 const rootEl = document.getElementById('root');
 if (rootEl) {
-  // If pre-rendered HTML exists, hydrate it; otherwise createRoot
-  if (rootEl.hasChildNodes()) {
-    try {
-      hydrateRoot(
-        rootEl,
-        <RootErrorBoundary>
-          <App />
-        </RootErrorBoundary>
-      );
-    } catch (e) {
-      console.warn('Hydration mismatch fallback to client render:', e);
-      createRoot(rootEl).render(
-        <RootErrorBoundary>
-          <App />
-        </RootErrorBoundary>
-      );
-    }
-  } else {
-    createRoot(rootEl).render(
-      <RootErrorBoundary>
-        <App />
-      </RootErrorBoundary>
-    );
-  }
+  createRoot(rootEl).render(
+    <RootErrorBoundary>
+      <App />
+    </RootErrorBoundary>
+  );
 }

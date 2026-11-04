@@ -12,7 +12,7 @@ export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 // Export Auth
 export const auth = getAuth(app);
 
-// Critical constraint: validate connection to Firestore on initial boot (non-blocking)
+// Connection validator callable on demand
 export async function testConnection(): Promise<boolean> {
   try {
     if (typeof window === 'undefined') return true;
@@ -23,16 +23,5 @@ export async function testConnection(): Promise<boolean> {
       console.warn('Firebase running in offline/cached mode.');
     }
     return false;
-  }
-}
-
-// Execute connection test on boot safely in browser
-if (typeof window !== 'undefined') {
-  try {
-    testConnection().catch((err) => {
-      console.debug('Initial Firestore connection note (non-fatal):', err);
-    });
-  } catch (e) {
-    console.debug('Safe boot check bypassed:', e);
   }
 }
