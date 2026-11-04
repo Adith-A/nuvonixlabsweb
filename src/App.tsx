@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { submitContactMessage } from './lib/firestoreService';
+import { sendContactEmail } from './lib/contact';
 
 export default function App() {
   // Contact Modal State
@@ -29,7 +29,7 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Handle Contact Form Submission (writes to Firestore inquiries collection)
+  // Handle Contact Form Submission (emails the message via FormSubmit, see lib/contact.ts)
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedName = contactForm.name.trim();
@@ -45,7 +45,7 @@ export default function App() {
     setContactLoading(true);
 
     try {
-      await submitContactMessage({
+      await sendContactEmail({
         name: trimmedName,
         email: trimmedEmail,
         organization: contactForm.organization.trim(),
