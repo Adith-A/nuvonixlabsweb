@@ -194,8 +194,8 @@ export default function App() {
         }
 
         .nx-logo-img {
-          width: 36px;
-          height: 36px;
+          width: auto;
+          height: 34px;
           object-fit: contain;
           flex-shrink: 0;
           display: block;
@@ -203,8 +203,8 @@ export default function App() {
         }
 
         .nx-footer-logo-img {
-          width: 28px;
-          height: 28px;
+          width: auto;
+          height: 26px;
           object-fit: contain;
           flex-shrink: 0;
           display: block;
