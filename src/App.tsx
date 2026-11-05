@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { sendContactEmail } from './lib/contact';
+// Imported (not served from /public) so the built file name changes whenever
+// the logo changes, and browsers can never show a stale cached copy.
+import logoMark from './assets/logo-mark.png';
 
 export default function App() {
   // Contact Modal State
@@ -743,17 +746,7 @@ export default function App() {
           <div className="nx-header-inner">
             {/* Logo */}
             <a href={import.meta.env.BASE_URL} className="nx-brand" aria-label="Nuvonix Labs Home">
-              <img
-                src={`${import.meta.env.BASE_URL}image.png`}
-                alt="Nuvonix Labs"
-                className="nx-logo-img"
-                onError={(e) => {
-                  const target = e.currentTarget;
-                  if (!target.src.endsWith('image.png')) {
-                    target.src = `${import.meta.env.BASE_URL}image.png`;
-                  }
-                }}
-              />
+              <img src={logoMark} alt="Nuvonix Labs" className="nx-logo-img" />
               <span>Nuvonix Labs</span>
             </a>
 
@@ -1057,7 +1050,7 @@ export default function App() {
         <div className="nx-container">
           <div className="nx-footer-inner">
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <img src={`${import.meta.env.BASE_URL}image.png`} alt="Nuvonix Labs" className="nx-footer-logo-img" />
+              <img src={logoMark} alt="Nuvonix Labs" className="nx-footer-logo-img" />
               <strong style={{ color: 'var(--nx-navy)', fontSize: '1.05rem', letterSpacing: '-0.02em' }}>Nuvonix Labs</strong>
             </div>
 
