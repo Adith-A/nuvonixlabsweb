@@ -62,6 +62,11 @@ export default function App() {
 
   const openContact = (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
+    // After a sent message, start the next one from a blank form
+    // (the "Done" button already does this; closing via ×, Escape or backdrop didn't).
+    if (contactSuccess) {
+      setContactForm({ name: '', email: '', organization: '', message: '' });
+    }
     setContactSuccess(false);
     setContactError(null);
     setContactModalOpen(true);
@@ -929,10 +934,12 @@ export default function App() {
               <div><span className="nx-code-dim">$</span> git clone https://github.com/Adith-A/nuvonix-accounting-eval-sample.git</div>
               <div><span className="nx-code-dim">$</span> cd nuvonix-accounting-eval-sample</div>
               <div><span className="nx-code-dim">$</span> python3 verify.py submissions/gold_pass_submission.json</div>
-              <div style={{ marginTop: '8px' }}><span className="nx-code-cyan">[INFO]</span> Loading task manifest: <span className="nx-code-green">NUV-DE-102</span> (Multi-Entity Stripe Payout Reconciler)</div>
-              <div><span className="nx-code-cyan">[PASS]</span> Integer-cent arithmetic balance check: zero variance ($0.00)</div>
-              <div><span className="nx-code-cyan">[PASS]</span> ASC 606 revenue deferral &amp; realization timeline satisfied</div>
-              <div><span className="nx-code-green">&gt;&gt; VERIFICATION SUCCESS: 100.0% ground-truth invariant match (Exit Code 0)</span></div>
+              {/* Lines below are copied from verify.py's real output for the gold submission. */}
+              <div style={{ marginTop: '8px' }}><span className="nx-code-cyan">NUVONIX ACCOUNTING EVAL HARNESS</span> | engine: nuvonix_gl_state_verifier_v1</div>
+              <div>Task <span className="nx-code-green">NUV-DE-102</span> | grading policy: BINARY_ALL_OR_NOTHING | period end: 2026-09-30</div>
+              <div><span className="nx-code-dim">&hellip; journal-entry balance audit, recomputed ledger, assertion table &hellip;</span></div>
+              <div>Assertions passed: <span className="nx-code-green">10/10</span></div>
+              <div><span className="nx-code-green">FINAL BENCHMARK SCORE: 1 (PASS)</span></div>
             </div>
           </div>
         </div>
