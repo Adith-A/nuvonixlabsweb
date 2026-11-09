@@ -10,6 +10,10 @@ export interface ContactMessage {
   email: string;
   organization?: string;
   message: string;
+  /** Optional phone number (used by the small-business inquiry form). */
+  phone?: string;
+  /** Which form sent it, shown in the email subject, e.g. "Small business AI setup". */
+  source?: string;
 }
 
 export async function sendContactEmail(data: ContactMessage): Promise<void> {
@@ -17,6 +21,8 @@ export async function sendContactEmail(data: ContactMessage): Promise<void> {
   const email = data.email.trim().slice(0, 256);
   const organization = (data.organization || '').trim().slice(0, 128);
   const message = data.message.trim().slice(0, 4096);
+  const phone = (data.phone || '').trim().slice(0, 40);
+  const source = (data.source || '').trim().slice(0, 80);
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
@@ -30,12 +36,13 @@ export async function sendContactEmail(data: ContactMessage): Promise<void> {
       },
       body: JSON.stringify({
         access_key: WEB3FORMS_ACCESS_KEY,
-        subject: `Nuvonix Labs contact form: ${name}${organization ? ` (${organization})` : ''}`,
+        subject: `${source || 'Nuvonix Labs contact form'}: ${name}${organization ? ` (${organization})` : ''}`,
         from_name: 'Nuvonix Labs website',
         replyto: email,
         name,
         email,
         organization: organization || '(not provided)',
+        ...(phone ? { phone } : {}),
         message,
       }),
       signal: controller.signal,
