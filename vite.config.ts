@@ -9,6 +9,16 @@ export default defineConfig(() => {
     // (nuvonixlabs.com) AND under a sub-path (username.github.io/nuvonixlabsweb/).
     base: './',
     plugins: [react(), tailwindcss()],
+    build: {
+      // Two pages: the home page and the small-business services page
+      // (served at nuvonixlabs.com/services/).
+      rollupOptions: {
+        input: {
+          main: path.resolve(import.meta.dirname, 'index.html'),
+          services: path.resolve(import.meta.dirname, 'services/index.html'),
+        },
+      },
+    },
     resolve: {
       alias: {
         '@': path.resolve(import.meta.dirname, '.'),
