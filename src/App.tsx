@@ -195,9 +195,9 @@ export default function App() {
                   <line x1="16" y1="17" x2="8" y2="17" />
                 </svg>
               </div>
-              <h3 className="nx-card-title">Practitioner-Authored Tasks</h3>
+              <h3 className="nx-card-title">Realistic Business Scenarios</h3>
               <p className="nx-card-desc">
-                Realistic business scenarios authored by accounting and corporate finance professionals, reflecting real-world corporate ledgers and technical codifications.
+                Multi-file tasks built from realistic ledgers, contracts and payment data, grounded in the accounting standards models need to apply, such as ASC 606.
               </p>
             </div>
 
