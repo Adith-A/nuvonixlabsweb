@@ -435,9 +435,15 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Tax-data note */}
+      {/* After setup + tax-data note */}
       <section className="nx-section" style={{ paddingTop: 0 }}>
         <div className="nx-container">
+          <div className="nx-note" id="after-setup" style={{ marginBottom: 20 }}>
+            <h3 className="nx-note-title">After setup: custom automations</h3>
+            <p>
+              Once your policy and tools are in place, we can build small automations for the repetitive work your team wants off its plate first, such as sorting client documents, drafting engagement letters or chasing missing paperwork. Each one is scoped and quoted separately, tested on your own tasks before it goes live, and offered to firms that have completed setup.
+            </p>
+          </div>
           <div className="nx-note">
             <h3 className="nx-note-title">A note for firms that prepare tax returns</h3>
             <p>
