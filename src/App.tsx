@@ -417,7 +417,7 @@ export default function App() {
                 GitHub Sample
               </a>
               <a href="services/" className="nx-footer-link">
-                Small Business AI Setup
+                Small Business AI &amp; Websites
               </a>
               <button
                 type="button"
