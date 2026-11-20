@@ -237,6 +237,42 @@ const INCLUDED = [
   },
 ];
 
+const MORE_SERVICES = [
+  {
+    title: 'Automations & AI agents',
+    desc: 'Take one repetitive job off your team’s plate: sorting the inbox and drafting replies, pulling invoice and receipt data into your books, or sending appointment reminders and follow-ups. Built on tools like Zapier, Make or n8n with an AI model, and tested on your real tasks before it goes live.',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+        <polyline points="16 3 21 3 21 8" />
+        <line x1="4" y1="20" x2="21" y2="3" />
+        <polyline points="21 16 21 21 16 21" />
+        <line x1="15" y1="15" x2="21" y2="21" />
+        <line x1="4" y1="4" x2="9" y2="9" />
+      </svg>
+    ),
+  },
+  {
+    title: 'An AI assistant for your website',
+    desc: 'A chat assistant that answers common customer questions from your own information, collects details or booking requests, and hands off to a person when it should.',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </svg>
+    ),
+  },
+  {
+    title: 'New or refreshed websites',
+    desc: 'A fast, mobile-friendly site that’s easy to update, with clear service pages and a contact form that reaches your inbox. Starting from scratch or fixing an outdated one.',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+        <line x1="8" y1="21" x2="16" y2="21" />
+        <line x1="12" y1="17" x2="12" y2="21" />
+      </svg>
+    ),
+  },
+];
+
 export default function ServicesPage() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [loading, setLoading] = useState(false);
@@ -250,7 +286,7 @@ export default function ServicesPage() {
     const firm = form.firm.trim();
     const message = form.message.trim();
     if (!name || !email || !firm || !message) {
-      setError('Please fill in your name, email, firm name and what you would like help with.');
+      setError('Please fill in your name, email, business name and what you would like help with.');
       return;
     }
     setError(null);
@@ -262,7 +298,7 @@ export default function ServicesPage() {
         organization: firm,
         phone: form.phone.trim(),
         message,
-        source: 'Small business AI setup inquiry',
+        source: 'Small business services inquiry',
       });
       setSent(true);
     } catch (err) {
@@ -290,6 +326,7 @@ export default function ServicesPage() {
                 <a href="../" className="nx-nav-link">Home</a>
                 <a href="#included" className="nx-nav-link">What&rsquo;s Included</a>
                 <a href="#pricing" className="nx-nav-link">Pricing</a>
+                <a href="#more" className="nx-nav-link">Automations &amp; Websites</a>
               </nav>
               <a href="#contact" className="nx-btn-primary">Book a Call</a>
             </div>
@@ -435,13 +472,40 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {/* Automations, agents & websites */}
+      <section className="nx-section nx-section-surface" id="more">
+        <div className="nx-container">
+          <div className="nx-section-header">
+            <span className="nx-section-kicker">For any small business</span>
+            <h2 className="nx-section-title">Automations, AI Agents &amp; Websites</h2>
+            <p className="nx-section-sub">
+              Not an accounting firm? We also build practical tools for small businesses of any kind. Each project is scoped on a free 15-minute call and quoted at a fixed price before any work starts.
+            </p>
+          </div>
+          <div className="nx-grid-3">
+            {MORE_SERVICES.map((item) => (
+              <div className="nx-card" key={item.title}>
+                <div className="nx-card-icon">{item.icon}</div>
+                <h3 className="nx-card-title">{item.title}</h3>
+                <p className="nx-card-desc">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{ textAlign: 'center', marginTop: 36 }}>
+            <a href="#contact" className="nx-btn-primary" style={{ padding: '13px 28px', fontSize: '0.96rem' }}>
+              Tell Us What You Need
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* After setup + tax-data note */}
-      <section className="nx-section" style={{ paddingTop: 0 }}>
+      <section className="nx-section">
         <div className="nx-container">
           <div className="nx-note" id="after-setup" style={{ marginBottom: 20 }}>
-            <h3 className="nx-note-title">After setup: custom automations</h3>
+            <h3 className="nx-note-title">For accounting firms: automations after setup</h3>
             <p>
-              Once your policy and tools are in place, we can build small automations for the repetitive work your team wants off its plate first, such as sorting client documents, drafting engagement letters or chasing missing paperwork. Each one is scoped and quoted separately, tested on your own tasks before it goes live, and offered to firms that have completed setup.
+              Once your policy and tools are in place, we can automate the repetitive work your team wants off its plate first, such as sorting client documents, drafting engagement letters or chasing missing paperwork. Each one is scoped and quoted separately and tested on your own tasks before it goes live, inside the rules your AI policy sets.
             </p>
           </div>
           <div className="nx-note">
@@ -496,7 +560,7 @@ export default function ServicesPage() {
                     value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
                 </div>
                 <div className="nx-form-group">
-                  <label htmlFor="s-firm" className="nx-label">Firm Name</label>
+                  <label htmlFor="s-firm" className="nx-label">Business Name</label>
                   <input id="s-firm" type="text" required className="nx-input" placeholder="e.g. Miller Bookkeeping"
                     value={form.firm} onChange={(e) => setForm({ ...form, firm: e.target.value })} />
                 </div>
