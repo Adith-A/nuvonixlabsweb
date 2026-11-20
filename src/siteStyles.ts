@@ -246,6 +246,7 @@ button, input, select, textarea {
   letter-spacing: -0.04em;
   margin-bottom: 22px;
   font-feature-settings: "cv02", "cv03", "cv04";
+  text-wrap: balance;
 }
 
 .nx-hero-sub {
@@ -256,6 +257,7 @@ button, input, select, textarea {
   margin: 0 auto 36px;
   font-weight: 400;
   letter-spacing: -0.01em;
+  text-wrap: pretty;
 }
 
 .nx-hero-actions {
@@ -302,6 +304,7 @@ button, input, select, textarea {
   letter-spacing: -0.03em;
   margin-bottom: 16px;
   line-height: 1.22;
+  text-wrap: balance;
 }
 
 .nx-section-sub {
@@ -309,6 +312,15 @@ button, input, select, textarea {
   color: var(--nx-slate);
   line-height: 1.65;
   letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+/* Keep body copy from ending on a single orphaned word. */
+.nx-card p,
+.nx-banner p,
+.nx-contact-card p,
+.nx-note p {
+  text-wrap: pretty;
 }
 
 .nx-grid-3 {
@@ -392,7 +404,9 @@ button, input, select, textarea {
   font-weight: 800;
   color: var(--nx-navy);
   letter-spacing: -0.025em;
+  line-height: 1.3;
   margin-bottom: 8px;
+  text-wrap: balance;
 }
 
 .nx-banner-desc {
@@ -438,6 +452,12 @@ button, input, select, textarea {
   line-height: 1.7;
   color: #E2E8F0;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Terminal lines scroll sideways instead of wrapping mid-word. */
+.nx-terminal-code > div {
+  white-space: pre;
 }
 
 .nx-code-dim {
@@ -654,6 +674,47 @@ button, input, select, textarea {
   }
   .nx-banner {
     padding: 28px;
+  }
+  /* Tighter vertical rhythm on small screens, same on every page. */
+  .nx-hero {
+    padding: 72px 0 64px;
+  }
+  .nx-section {
+    padding: 72px 0;
+  }
+  .nx-section-header {
+    margin-bottom: 40px;
+  }
+  .nx-card {
+    padding: 28px 24px;
+  }
+  .nx-terminal-code {
+    padding: 16px 18px;
+    font-size: 0.78rem;
+  }
+  .nx-footer-inner {
+    align-items: flex-start;
+  }
+  .nx-footer-links {
+    gap: 12px 24px;
+  }
+  .nx-footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 560px) {
+  /* Hero buttons: stacked and equal width. */
+  .nx-hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  .nx-hero-actions > * {
+    width: 100%;
   }
 }
 `;
